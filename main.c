@@ -82,8 +82,8 @@ void planePlayer(int head,int player[10][10])
                     }
                 }
                 if (i==4) {
-                    player[(int)(head/10)+i][head%10-1-1]=0;
-                    player[(int)(head/10)+i][head%10-1+1]=0;
+                    player[(int)(head/10)+i-1][head%10-1-1]=0;
+                    player[(int)(head/10)+i-1][head%10-1+1]=0;
                 }
             }
             
@@ -91,7 +91,7 @@ void planePlayer(int head,int player[10][10])
             break;
         case 90:
             for (int i=1; i<=4; i++) {
-                player[(int)(head/10)][head%10-1-i]=0;
+                player[(int)(head/10)][head%10-i]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
                         player[(int)(head/10)-j][head%10-1-i]=0;
@@ -99,23 +99,23 @@ void planePlayer(int head,int player[10][10])
                     }
                 }
                 if (i==4) {
-                    player[(int)(head/10)-1][head%10-1-i]=0;
-                    player[(int)(head/10)+1][head%10-1-i]=0;
+                    player[(int)(head/10)-1][head%10-i]=0;
+                    player[(int)(head/10)+1][head%10-i]=0;
                 }
             }
             
             
             break;
         case 180:
-            for (int i=1; i<=4; i++) {
-                player[(int)(head/10)+i][head%10-1]=0;
+            for (int i=1; i<=3; i++) {
+                player[(int)(head/10)-i][head%10-1]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
                         player[(int)(head/10)-i][head%10-1-j]=0;
                         player[(int)(head/10)-i][head%10-1+j]=0;
                     }
                 }
-                if (i==4) {
+                if (i==3) {
                     player[(int)(head/10)-i][head%10-1-1]=0;
                     player[(int)(head/10)-i][head%10-1+1]=0;
                 }
@@ -124,17 +124,17 @@ void planePlayer(int head,int player[10][10])
             
             break;
         case 270:
-            for (int i=1; i<=4; i++) {
-                player[(int)(head/10)][head%10-1+i]=0;
+            for (int i=1; i<=3; i++) {
+                player[(int)(head/10)][head%10+i-1]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
-                        player[(int)(head/10)-j][head%10-1+i]=0;
-                        player[(int)(head/10)+j][head%10-1+i]=0;
+                        player[(int)(head/10)-j][head%10+i-1]=0;
+                        player[(int)(head/10)+j][head%10+i-1]=0;
                     }
                 }
-                if (i==4) {
-                    player[(int)(head/10)-1][head%10-1+i]=0;
-                    player[(int)(head/10)+1][head%10-1+i]=0;
+                if (i==3) {
+                    player[(int)(head/10)-1][head%10+i-1]=0;
+                    player[(int)(head/10)+1][head%10+i-1]=0;
                 }
             }
             
