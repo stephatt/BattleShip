@@ -21,39 +21,29 @@ int computerGuess;
 
 void main()
 {
-    void outputmap(int line);
-    outputmap(10);
+    void outputmapA(int line);
+    void outputmapB(int line);
+    
+    void headHuman();
+    void headCom();
     
     void planePlayer(int head,int player[10][10]);
-    printf("input your plane's head is:");
-    scanf("%d",&headPlayer);
-    planePlayer(headPlayer,humanPlayer);
-    srand((unsigned long)time(NULL));
-    headComputer=rand()%100;
-    planePlayer(headComputer,computerPlayer);
+    void planeComputer(int head,int player[10][10]);
+    headHuman();
+    headCom();
     
-    int AbattlePlane(int guess);
-    int BbattlePlane(int guess);
-    srand((unsigned long)time(NULL));
-    computerGuess=rand()%100;
-    for (int i=1,j=1;;) {
-        printf("Your turn to guess where is the plane:");
-        scanf("%d",&playerGuess);
-        i=AbattlePlane(playerGuess);
-        j=BbattlePlane(computerGuess);
-        if (i==0||j==0) {
-            break;
-        }
-    }
+    void guess();
+    guess();
+   
         
         
 }
 
 /*给出图纸坐标*/
-void outputmap(int line)
+void outputmapA(int line)
 {
     for (int i=1; i<=100; i++) {
-        computerPlayer[(int)(i/10)][i%10-1]=i;
+        
         humanPlayer[(int)(i/10)][i%10-1]=i;
         printf("%d",i);
         printf("\t");  //使数字对齐输出
@@ -64,43 +54,99 @@ void outputmap(int line)
     }
 }
 
-/*画飞机*/
+void outputmapB(int line)
+{
+    for (int i=1; i<=100; i++) {
+        computerPlayer[(int)(i/10)][i%10-1]=i;
+        printf("%d",i);
+        printf("\t");  //使数字对齐输出
+        if (i%10==0) {
+            printf("\n");
+        }
+        else continue;
+    }
+}
+
+/*玩家定义飞机头部*/
+void headHuman()
+{
+    outputmapA(10);
+    printf("input your plane's head is:");
+    scanf("%d",&headPlayer);
+    planePlayer(headPlayer,humanPlayer);
+}
+
+/*电脑定义飞机头部*/
+void headCom()
+{
+    outputmapB(10);
+    srand((unsigned long)time(NULL));
+    headComputer=rand()%100;
+    planeComputer(headComputer,computerPlayer);
+}
+
+/*用户画飞机*/
 void planePlayer(int head,int player[10][10])
 {
+    
     player[(int)(head/10)][head%10-1]=0;
     int angel;
-    printf("choose the angel of your plane,0,90,180 or 270:");
+    printf("choose the angel of plane,0,90,180 or 270:");
     scanf("%d",&angel);
     switch (angel) {
         case 0:
-            for (int i=1; i<=4; i++) {
+            for (int i=1; i<=3; i++) {
+                if ((int)(head/10)+i>9) {
+                    printf("you draw the wrong place");
+                    printf("\n");
+                    headHuman();
+                    break;
+                }
                 player[(int)(head/10)+i][head%10-1]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
+                        if (head%10-1-j<0||head%10-1+j>9) {
+                            printf("you draw the wrong place");
+                            printf("\n");
+                            headHuman();
+                            break;
+                        }
                         player[(int)(head/10)+i][head%10-1-j]=0;
                         player[(int)(head/10)+i][head%10-1+j]=0;
                     }
                 }
-                if (i==4) {
-                    player[(int)(head/10)+i-1][head%10-1-1]=0;
-                    player[(int)(head/10)+i-1][head%10-1+1]=0;
+                if (i==3) {
+                    player[(int)(head/10)+i][head%10-1-1]=0;
+                    player[(int)(head/10)+i][head%10-1+1]=0;
                 }
             }
             
             
             break;
         case 90:
-            for (int i=1; i<=4; i++) {
-                player[(int)(head/10)][head%10-i]=0;
+            for (int i=1; i<=3; i++) {
+                if (head%10-1-i<0) {
+                    printf("you draw the wrong place");
+                    printf("\n");
+                    headHuman();
+                    break;
+                }
+                player[(int)(head/10)][head%10-1-i]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
+                        if ((int)(head/10)-j<0||(int)(head/10)+j>9) {
+                            printf("you draw the wrong place");
+                            printf("\n");
+                            headHuman();
+                            break;
+                        }
                         player[(int)(head/10)-j][head%10-1-i]=0;
                         player[(int)(head/10)+j][head%10-1-i]=0;
                     }
                 }
-                if (i==4) {
-                    player[(int)(head/10)-1][head%10-i]=0;
-                    player[(int)(head/10)+1][head%10-i]=0;
+                if (i==3) {
+                    player[(int)(head/10)-1][head%10-i-1]=0;
+                    player[(int)(head/10)+1][head%10-i-1]=0;
                 }
             }
             
@@ -108,11 +154,23 @@ void planePlayer(int head,int player[10][10])
             break;
         case 180:
             for (int i=1; i<=3; i++) {
+                if ((int)(head/10)-i<0) {
+                    printf("you draw the wrong place");
+                    printf("\n");
+                    headHuman();
+                    break;
+                }
                 player[(int)(head/10)-i][head%10-1]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
-                        player[(int)(head/10)-i][head%10-1-j]=0;
+                        if (head%10-1-j<0||head%10-1+j>9) {
+                            printf("you draw the wrong place");
+                            printf("\n");
+                            headHuman();
+                            break;
+                        }
                         player[(int)(head/10)-i][head%10-1+j]=0;
+                        player[(int)(head/10)-i][head%10-1-j]=0;
                     }
                 }
                 if (i==3) {
@@ -125,9 +183,21 @@ void planePlayer(int head,int player[10][10])
             break;
         case 270:
             for (int i=1; i<=3; i++) {
+                if (head%10+i-1>9) {
+                    printf("you draw the wrong place");
+                    printf("\n");
+                    headHuman();
+                    break;
+                }
                 player[(int)(head/10)][head%10+i-1]=0;
                 if (i==1) {
                     for (int j=1; j<=2; j++) {
+                        if ((int)(head/10)-j<0||(int)(head/10)+j>9) {
+                            printf("you draw the wrong place");
+                            printf("\n");
+                            headHuman();
+                            break;
+                        }
                         player[(int)(head/10)-j][head%10+i-1]=0;
                         player[(int)(head/10)+j][head%10+i-1]=0;
                     }
@@ -153,10 +223,149 @@ void planePlayer(int head,int player[10][10])
     }
 }
 
-/*用户猜数打飞机*/
+
+/*电脑画飞机*/
+void planeComputer(int head,int player[10][10])
+{
+    
+    player[(int)(head/10)][head%10-1]=0;
+    int angel;
+    printf("choose the angel of plane,0,90,180 or 270:");
+    scanf("%d",&angel);
+    switch (angel) {
+        case 0:
+            for (int i=1; i<=3; i++) {
+                if ((int)(head/10)+i>9) {
+                    printf("you draw the wrong place");
+                    printf("\n");
+                    headCom();
+                    break;
+                }
+                player[(int)(head/10)+i][head%10-1]=0;
+                if (i==1) {
+                    for (int j=1; j<=2; j++) {
+                        if (head%10-1-j<0||head%10-1+j>9) {
+                            printf("\n");
+                            headCom();
+                            break;
+                        }
+                        player[(int)(head/10)+i][head%10-1-j]=0;
+                        player[(int)(head/10)+i][head%10-1+j]=0;
+                    }
+                }
+                if (i==3) {
+                    player[(int)(head/10)+i][head%10-1-1]=0;
+                    player[(int)(head/10)+i][head%10-1+1]=0;
+                }
+            }
+            
+            
+            break;
+        case 90:
+            for (int i=1; i<=3; i++) {
+                if (head%10-1-i<0) {
+                    
+                    printf("\n");
+                    headCom();
+                    break;
+                }
+                player[(int)(head/10)][head%10-1-i]=0;
+                if (i==1) {
+                    for (int j=1; j<=2; j++) {
+                        if ((int)(head/10)-j<0||(int)(head/10)+j>9) {
+                            
+                            printf("\n");
+                            headCom();
+                            break;
+                        }
+                        player[(int)(head/10)-j][head%10-1-i]=0;
+                        player[(int)(head/10)+j][head%10-1-i]=0;
+                    }
+                }
+                if (i==3) {
+                    player[(int)(head/10)-1][head%10-i-1]=0;
+                    player[(int)(head/10)+1][head%10-i-1]=0;
+                }
+            }
+            
+            
+            break;
+        case 180:
+            for (int i=1; i<=3; i++) {
+                if ((int)(head/10)-i<0) {
+                    
+                    printf("\n");
+                    headCom();
+                    break;
+                }
+                player[(int)(head/10)-i][head%10-1]=0;
+                if (i==1) {
+                    for (int j=1; j<=2; j++) {
+                        if (head%10-1-j<0||head%10-1+j>9) {
+                            
+                            printf("\n");
+                            headCom();
+                            break;
+                        }
+                        player[(int)(head/10)-i][head%10-1+j]=0;
+                        player[(int)(head/10)-i][head%10-1-j]=0;
+                    }
+                }
+                if (i==3) {
+                    player[(int)(head/10)-i][head%10-1-1]=0;
+                    player[(int)(head/10)-i][head%10-1+1]=0;
+                }
+            }
+            
+            
+            break;
+        case 270:
+            for (int i=1; i<=3; i++) {
+                if (head%10+i-1>9) {
+                   printf("\n");
+                    headCom();
+                    break;
+                }
+                player[(int)(head/10)][head%10+i-1]=0;
+                if (i==1) {
+                    for (int j=1; j<=2; j++) {
+                        if ((int)(head/10)-j<0||(int)(head/10)+j>9) {
+                            
+                            printf("\n");
+                            headCom();
+                            break;
+                        }
+                        player[(int)(head/10)-j][head%10+i-1]=0;
+                        player[(int)(head/10)+j][head%10+i-1]=0;
+                    }
+                }
+                if (i==3) {
+                    player[(int)(head/10)-1][head%10+i-1]=0;
+                    player[(int)(head/10)+1][head%10+i-1]=0;
+                }
+            }
+            
+            
+            break;
+            
+        default:
+            break;
+    }
+    for (int i=0; i<10; i++) {
+        for (int j=0; j<10; j++) {
+            printf("%d",player[i][j]);
+            printf("\t");
+        }
+        printf("\n");
+    }
+}
+
+
+
+/*猜数打飞机*/
 int AbattlePlane(int guess)
 {
-    if (computerPlayer[(int)(guess/10)][guess%10-1]==0&computerPlayer[(int)(guess/10)-1][guess%10-1]!=0&computerPlayer[(int)(guess/10)][guess%10+1]!=0) {
+    if (computerPlayer[(int)(guess/10)][guess%10-1]==0&guess==headComputer) {
         printf("RIGHT");
         printf("\n");
         return 0;
@@ -176,7 +385,7 @@ int AbattlePlane(int guess)
 /*电脑猜飞机*/
 int BbattlePlane(int guess)
 {
-    if (humanPlayer[(int)(guess/10)][guess%10-1]==0&humanPlayer[(int)(guess/10)-1][guess%10-1]!=0&humanPlayer[(int)(guess/10)][guess%10]!=0) {
+    if (humanPlayer[(int)(guess/10)][guess%10-1]==0&guess==headPlayer) {
         printf("RIGHT");
         printf("\n");
         return 0;
@@ -190,6 +399,23 @@ int BbattlePlane(int guess)
         printf("BAD");
         printf("\n");
         return 1;
+    }
+}
+
+void guess()
+{
+    int AbattlePlane(int guess);
+    int BbattlePlane(int guess);
+    srand((unsigned long)time(NULL));
+    computerGuess=rand()%100;
+    for (int i=1,j=1;;) {
+        printf("Your turn to guess where is the plane:");
+        scanf("%d",&playerGuess);
+        i=AbattlePlane(playerGuess);
+        j=BbattlePlane(computerGuess);
+        if (i==0||j==0) {
+            break;
+        }
     }
 }
 
